@@ -1,0 +1,14 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "TestInfrastructure Class Library",
+  "authors": [ "Devon" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "frameworks": {
+    "net46": { }
+  },
+  "dependencies": {
+    "Domain": "1.0.0-*"
+  }
+}

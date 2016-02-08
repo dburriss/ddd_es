@@ -1,25 +1,44 @@
-﻿using Domain.Commands;
+﻿using Domain;
+using Domain.Commands;
+using Domain.Events;
+using Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace DomainTests
 {
-    // This project can output the Class library as a NuGet Package.
-    // To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
-    public class ApplicationServiceTests
+    public class ApplicationServiceTests : IDisposable
     {
+        private InMemoryEventStore store;
+
         public ApplicationServiceTests()
         {
-
+            store = new InMemoryEventStore();
         }
 
-        //[Fact]
-        public void Handle_NewCommitteeCommand_PersistsCommitteeToDepartment()
+        public void Dispose()
         {
-            //var cmd  = new NewCommitteeCommand()
+            store = null;
         }
+
+        [Fact]
+        public void Handle_NewDepartmentCommand_PersistsNewDepartmentEvent()
+        {
+            var sut = GetApplicationService();
+            var departmentId = Guid.NewGuid();
+            var cmd = new NewDepartmentCommand(departmentId, "Test Department 1");
+            sut.Handle(cmd);
+            Assert.True(store.Load(departmentId).Any(x => x.GetType() == typeof(NewDepartmentEvent)));
+        }
+
+        private ApplicationService GetApplicationService()
+        {
+            
+            var service = new ApplicationService(store);
+            return service;
+        }
+
+
     }
 }

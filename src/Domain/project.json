@@ -1,12 +1,14 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "Domain Class Library",
   "authors": [ "Devon" ],
   "tags": [ "" ],
   "projectUrl": "",
   "licenseUrl": "",
-
   "frameworks": {
     "net46": { }
+  },
+  "dependencies": {
+    "ChimpLab.PhilosophicalMonkey": "0.9.2-rc1-update1"
   }
 }

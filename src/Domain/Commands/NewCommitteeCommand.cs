@@ -22,5 +22,8 @@ namespace Domain.Commands
             CommitteeId = committee;
             Name = name;
         }
+
+        protected NewCommitteeCommand()
+        {}
     }
 }

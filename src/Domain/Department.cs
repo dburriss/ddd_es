@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Domain
 {
-    public class Department
+    public class Department : IAmAggregate
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -14,6 +14,22 @@ namespace Domain
         public Department()
         {
             Committees = new List<Committee>();
+        }
+
+        public IEnumerable<IEvent> Handle(NewDepartmentCommand cmd)
+        {
+            if (cmd == null)
+                throw new ArgumentNullException(nameof(cmd));
+
+            if (cmd.AggregateId == Guid.Empty)
+                throw new ArgumentException(nameof(cmd.AggregateId));
+
+            if (string.IsNullOrEmpty(nameof(cmd.Name)))
+                throw new ArgumentException(nameof(cmd.AggregateId));
+
+            var events = new List<IEvent>();
+            events.Add(new NewDepartmentEvent(cmd.AggregateId, cmd.Name));
+            return events;
         }
 
         public IEnumerable<IEvent> Handle(NewCommitteeCommand cmd)
@@ -42,5 +58,15 @@ namespace Domain
 
             Committees.Add(committee);
         }
+
+        //public IEnumerable<IEvent> Handle<TCommand>(TCommand command) where TCommand : ICommand
+        //{
+        //    return Handle(command);
+        //}
+
+        //public void Process<TEvent>(TEvent @event) where TEvent : IEvent
+        //{
+        //    this.Process(@event);
+        //}
     }
 }

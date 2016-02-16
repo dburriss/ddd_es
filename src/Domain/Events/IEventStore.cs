@@ -7,5 +7,7 @@ namespace Domain.Events
     {
         void Store(Guid aggregateId, long version, IEnumerable<IEvent> events);
         IEventStream Load(Guid aggregateId);
+        void Register(IPostStoreHook hook);
+        void Unregister(IPostStoreHook hook);
     }
 }

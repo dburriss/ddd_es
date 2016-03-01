@@ -7,18 +7,19 @@ using System.Collections.Generic;
 
 namespace Domain
 {
-    public class ApplicationService
+    public class ApplicationCommandService : IApplicationCommandService
     {
         private readonly IEventStore _eventStore;
 
-        public ApplicationService(IEventStore eventStore)
+        public ApplicationCommandService(IEventStore eventStore)
         {
             _eventStore = eventStore;
         }
         public void Handle(ICommand command)
         {
             IEventStream eventStream = _eventStore.Load(command.AggregateId);
-            IAmAggregate root = CreateAggregate(command);
+            Type type = GetTargetType(command);
+            IAmAggregate root = CreateAggregate(type);
 
             if (root == null)
                 throw new InvalidOperationException("Could not get instance for aggreagate from command.");
@@ -31,7 +32,8 @@ namespace Domain
             var events = Handle(root, command);
             if (events != null && events.Any())
             {
-                _eventStore.Store(command.AggregateId, eventStream.Version, events);
+                var tag = EventTags.GetOrCreateIfNotExists(type);
+                _eventStore.Store(tag, command.AggregateId, eventStream.Version, events);
             }
         }
 
@@ -40,7 +42,7 @@ namespace Domain
             var type = root.GetType();
             var paramType = command.GetType();
             var methodInfo = type.GetMethods().Where(m => m.Name == "Handle" && m.GetParameters()[0].ParameterType == paramType).SingleOrDefault();
-            if(methodInfo != null)
+            if (methodInfo != null)
             {
                 return methodInfo.Invoke(root, new[] { command }) as IEnumerable<IEvent>;
             }
@@ -59,15 +61,26 @@ namespace Domain
             throw new InvalidOperationException("No 'Process' method on aggregate.");
         }
 
-        private IAmAggregate CreateAggregate(ICommand command)
+        private IAmAggregate CreateAggregate(Type type)
+        {
+            if (type == null)
+            {
+                return null;
+            }
+
+            var instance = Activator.CreateInstance(type);
+            return instance as IAmAggregate;
+
+        }
+
+        private Type GetTargetType(ICommand command)
         {
             var interfaces = command.GetType().GetInterfaces();
             var target = interfaces.Where(i => Reflect.IsGenericType(i) && i.GetGenericTypeDefinition() == typeof(ITargetAggregate<>)).SingleOrDefault();
             if (target != null)
             {
                 var type = target.GetGenericArguments()[0];
-                var instance = Activator.CreateInstance(type);
-                return instance as IAmAggregate;
+                return type;
             }
             return null;
         }

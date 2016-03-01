@@ -31,6 +31,18 @@ namespace DomainTests
         }
 
         [Fact]
+        public void Process_NewDepartmentEvent_SetsNAmeAndId()
+        {
+            var id = Guid.NewGuid();
+            var @event = new NewDepartmentEvent(id, "Test Department");
+            var department = new Department();
+            department.Process(@event);
+
+            Assert.Equal(id, department.Id);
+            Assert.Equal("Test Department", department.Name);
+        }
+
+        [Fact]
         public void Process_NewCommitteeEvent_SetsCommitteeProperties()
         {
             var id = Guid.NewGuid();

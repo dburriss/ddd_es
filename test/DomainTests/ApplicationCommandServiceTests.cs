@@ -8,11 +8,11 @@ using Xunit;
 
 namespace DomainTests
 {
-    public class ApplicationServiceTests : IDisposable
+    public class ApplicationCommandServiceTests : IDisposable
     {
         private InMemoryEventStore store;
 
-        public ApplicationServiceTests()
+        public ApplicationCommandServiceTests()
         {
             store = new InMemoryEventStore();
         }
@@ -32,10 +32,10 @@ namespace DomainTests
             Assert.True(store.Load(departmentId).Any(x => x.GetType() == typeof(NewDepartmentEvent)));
         }
 
-        private ApplicationService GetApplicationService()
+        private ApplicationCommandService GetApplicationService()
         {
             
-            var service = new ApplicationService(store);
+            var service = new ApplicationCommandService(store);
             return service;
         }
 

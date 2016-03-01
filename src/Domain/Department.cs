@@ -2,6 +2,7 @@
 using Domain.Events;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain
 {
@@ -48,6 +49,12 @@ namespace Domain
             return events;
         }
 
+        public void Process(NewDepartmentEvent @event)
+        {
+            this.Id = @event.DepartmentId;
+            this.Name = @event.Name;
+        }
+
         public void Process(NewCommitteeEvent @event)
         {
             var committee = new Committee()
@@ -59,14 +66,14 @@ namespace Domain
             Committees.Add(committee);
         }
 
-        //public IEnumerable<IEvent> Handle<TCommand>(TCommand command) where TCommand : ICommand
-        //{
-        //    return Handle(command);
-        //}
-
-        //public void Process<TEvent>(TEvent @event) where TEvent : IEvent
-        //{
-        //    this.Process(@event);
-        //}
+        public void Process(IEvent @event)
+        {
+            var eventType = @event.GetType();
+            var methodInfo = this.GetType().GetMethods().Where(m => m.Name == "Process" && m.GetParameters()[0].ParameterType == eventType).SingleOrDefault();
+            if (methodInfo != null)
+            {
+                methodInfo.Invoke(this, new[] { @event });
+            }
+        }
     }
 }

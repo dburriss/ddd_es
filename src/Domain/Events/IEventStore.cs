@@ -5,7 +5,9 @@ namespace Domain.Events
 {
     public interface IEventStore
     {
-        void Store(Guid aggregateId, long version, IEnumerable<IEvent> events);
+        IEnumerable<string> Tags { get; }
+        IEnumerable<Guid> AggregateList(string tag);
+        void Store(string tag, Guid aggregateId, long version, IEnumerable<IEvent> events);
         IEventStream Load(Guid aggregateId);
         void Register(IPostStoreHook hook);
         void Unregister(IPostStoreHook hook);

@@ -8,5 +8,6 @@ namespace Domain
     {
         //IEnumerable<IEvent> Handle<TCommand>(TCommand command) where TCommand : ICommand;
         //void Process<TEvent>(TEvent @event) where TEvent : IEvent;
+        void Process(IEvent @event);
     }
 }

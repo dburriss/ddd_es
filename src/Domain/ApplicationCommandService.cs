@@ -26,7 +26,8 @@ namespace Domain
 
             foreach (var @event in eventStream)
             {
-                Process(root, @event);
+                root.Process(@event);
+                //Process(root, @event);
             }
 
             var events = Handle(root, command);
@@ -49,17 +50,19 @@ namespace Domain
             throw new InvalidOperationException("No 'Handle' method on aggregate.");
         }
 
-        private void Process(IAmAggregate root, IEvent @event)
-        {
-            var type = root.GetType();
-            var paramType = @event.GetType();
-            var methodInfo = type.GetMethods().Where(m => m.Name == "Process" && m.GetParameters()[0].ParameterType == paramType).SingleOrDefault();
-            if (methodInfo != null)
-            {
-                methodInfo.Invoke(root, new[] { @event });
-            }
-            throw new InvalidOperationException("No 'Process' method on aggregate.");
-        }
+        //private void Process(IAmAggregate root, IEvent @event)
+        //{
+        //    var type = root.GetType();
+        //    var paramType = @event.GetType();
+        //    //var methodInfo = type.GetMethods().Where(m => m.Name == "Process" && m.GetParameters()[0].ParameterType == paramType).SingleOrDefault();
+        //    var processMethods = type.GetMethods().Where(m => m.Name == "Process");
+        //    var methodInfo = processMethods.Where(m => m.GetParameters()[0].ParameterType == paramType).SingleOrDefault();
+        //    if (methodInfo != null)
+        //    {
+        //        methodInfo.Invoke(root, new[] { @event });
+        //    }
+        //    throw new InvalidOperationException("No 'Process' method on aggregate for event: " + paramType.Name);
+        //}
 
         private IAmAggregate CreateAggregate(Type type)
         {

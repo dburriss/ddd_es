@@ -37,7 +37,7 @@ namespace Infrastructure.Data
                 
             var ids = _eventStore.AggregateList(tag);
             var departments = GetAllDepartments(ids);
-            return departments.Where(filter?.Compile());
+            return departments.Where(x => x.IsActive).Where(filter?.Compile());
         }
 
         private IEnumerable<Department> GetAllDepartments(IEnumerable<Guid> ids)

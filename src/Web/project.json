@@ -1,0 +1,55 @@
+﻿{
+  "version": "1.0.0-*",
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "AutoMapper": "4.1.1",
+    "AutoMapper.SelfConfig": "0.9.0-rc1-update1",
+    "Lifecycle.AspNet": "0.9.1-rc1-update1",
+    "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-final",
+    "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
+    "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
+    "Microsoft.AspNet.Session": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Caching.Memory": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
+    "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Tooling.Razor": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Configuration.FileProviderExtensions": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
+    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc1-final",
+    "SimpleInjector.Integration.AspNet": "3.1.2-beta4",
+    "PhilosophicalMonkey": "0.13.0-rc1-update1",
+    "BetterSession.AspNet.Mvc": "0.0.1"
+  },
+
+  "commands": {
+    "web": "Microsoft.AspNet.Server.Kestrel"
+  },
+
+  "frameworks": {
+    "dnx46": {
+      "dependencies": {
+        "Domain": "1.0.0-*",
+        "Infrastructure": "1.0.0-*"
+      }
+    }
+  },
+
+  "exclude": [
+    "wwwroot",
+    "node_modules"
+  ],
+  "publishExclude": [
+    "**.user",
+    "**.vspscc"
+  ],
+  "scripts": {
+    "prepublish": [ "npm install", "bower install", "gulp clean", "gulp min" ]
+  }
+}

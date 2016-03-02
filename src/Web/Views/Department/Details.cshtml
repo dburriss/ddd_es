@@ -1,0 +1,48 @@
+﻿@model DepartmentViewModel
+<div class="col-lg-9">
+    <h3>@Model.Name</h3>
+    <blockquote>@Model.Id</blockquote>
+
+    <table class="table table-hover">
+        <caption>Committees</caption>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model.Committees)
+            {
+                <tr>
+                    <td>@c.Name</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-sm"><span class="glyphicon glyphicon-eye-open"></span></a>
+                        <a asp-action="Update" asp-route-id="@c.Id" class="btn btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a asp-action="Delete" asp-route-id="@c.Id" class="btn btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div class="col-lg-3">
+    <div class="panel panel-default">
+        <div class="panel-heading">Department Actions</div>
+        <div class="panel-body">
+            <div>
+                <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-pencil"></span> UPDATE
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-trash"></span> DELETE
+                </a>
+                <a asp-action="Create" asp-controller="Committee" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus-sign"></span> NEW COMMITTEE
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>

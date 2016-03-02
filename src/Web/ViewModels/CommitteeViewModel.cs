@@ -1,12 +1,10 @@
 ﻿using System;
-using Domain.Events;
 
-namespace Domain
+namespace Web.ViewModels
 {
-    public class Committee
+    public class CommitteeViewModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Mandate { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace Domain
         public Guid Id { get; set; }
         public string Name { get; set; }
         public ICollection<Committee> Committees { get; set; }
+        public bool IsActive { get; set; }
 
         public Department()
         {
@@ -30,6 +31,35 @@ namespace Domain
 
             var events = new List<IEvent>();
             events.Add(new NewDepartmentEvent(cmd.AggregateId, cmd.Name));
+            return events;
+        }
+
+        public IEnumerable<IEvent> Handle(UpdateDepartmentCommand cmd)
+        {
+            if (cmd == null)
+                throw new ArgumentNullException(nameof(cmd));
+
+            if (cmd.AggregateId == Guid.Empty)
+                throw new ArgumentException(nameof(cmd.AggregateId));
+
+            if (string.IsNullOrEmpty(nameof(cmd.Name)))
+                throw new ArgumentException(nameof(cmd.AggregateId));
+
+            var events = new List<IEvent>();
+            events.Add(new UpdateDepartmentEvent(cmd.AggregateId, cmd.Name));
+            return events;
+        }
+
+        public IEnumerable<IEvent> Handle(DeleteDepartmentCommand cmd)
+        {
+            if (cmd == null)
+                throw new ArgumentNullException(nameof(cmd));
+
+            if (cmd.AggregateId == Guid.Empty)
+                throw new ArgumentException(nameof(cmd.AggregateId));
+
+            var events = new List<IEvent>();
+            events.Add(new DeleteDepartmentEvent(cmd.AggregateId));
             return events;
         }
 
@@ -53,6 +83,17 @@ namespace Domain
         {
             this.Id = @event.DepartmentId;
             this.Name = @event.Name;
+            this.IsActive = true;
+        }
+
+        public void Process(UpdateDepartmentEvent @event)
+        {
+            this.Name = @event.Name;
+        }
+
+        public void Process(DeleteDepartmentEvent @event)
+        {
+            this.IsActive = false;
         }
 
         public void Process(NewCommitteeEvent @event)

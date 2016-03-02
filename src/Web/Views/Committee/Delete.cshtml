@@ -1,0 +1,22 @@
+﻿@model CommitteeViewModel
+<div class="col-lg-9">
+    <h3>@Model.Name</h3>
+    <blockquote>@Model.Id</blockquote>
+    <p>@Model.Mandate</p>
+
+    <div class="well well-lg">
+        <form asp-action="Delete">
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">
+                <span class="glyphicon glyphicon-arrow-left"></span> CANCEL
+            </a>
+
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="DepartmentId" type="hidden" />
+            <button class="btn btn-danger" type="submit">
+                <span class="glyphicon glyphicon-trash"></span> CONFIRM DELETE
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="clearfix"></div>

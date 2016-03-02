@@ -14,7 +14,7 @@ namespace DomainTests
         public void Handle_NewCommitteeCommand_RetursAtLeast1Event()
         {
             var department = GetTestDepartment();
-            var cmd = new NewCommitteeCommand(Guid.NewGuid(), "Test Committee 1", department.Id);
+            var cmd = new NewCommitteeCommand(Guid.NewGuid(), "Test Committee 1", "mandate", department.Id);
             var events = department.Handle(cmd);
 
             Assert.NotEmpty(events);
@@ -24,7 +24,7 @@ namespace DomainTests
         public void Handle_NewCommitteeCommand_RetursAtNewCommitteeEvent()
         {
             var department = GetTestDepartment();
-            var cmd = new NewCommitteeCommand(Guid.NewGuid(), "Test Committee 1", department.Id);
+            var cmd = new NewCommitteeCommand(Guid.NewGuid(), "Test Committee 1", "mandate", department.Id);
             var events = department.Handle(cmd);
 
             Assert.True(events.Any(x => x.GetType() == typeof(NewCommitteeEvent)));
@@ -46,7 +46,7 @@ namespace DomainTests
         public void Process_NewCommitteeEvent_SetsCommitteeProperties()
         {
             var id = Guid.NewGuid();
-            var @event = new NewCommitteeEvent(id, "Test Committee");
+            var @event = new NewCommitteeEvent(id, "Test Committee", "mandate");
             var department = new Department();
             department.Process(@event);
 

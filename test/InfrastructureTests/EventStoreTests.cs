@@ -19,7 +19,7 @@ namespace InfrastructureTests
             var store = new InMemoryEventStore();
             var counterHook = new CounterHook("myCounter");
             store.Register(counterHook);
-            store.Store(departmentTag, id, 0, new IEvent[] { new NewCommitteeEvent(id, "Test Committee") });
+            store.Store(departmentTag, id, 0, new IEvent[] { new NewCommitteeEvent(id, "Test Committee", "mandate") });
             Assert.Equal(1, counterHook.Count);
         }
 
@@ -31,7 +31,7 @@ namespace InfrastructureTests
             var counterHook = new CounterHook("myCounter");
             store.Register(counterHook);
             store.Unregister(counterHook);
-            store.Store(departmentTag, id, 0, new IEvent[] { new NewCommitteeEvent(id, "Test Committee") });
+            store.Store(departmentTag, id, 0, new IEvent[] { new NewCommitteeEvent(id, "Test Committee", "mandate") });
             Assert.Equal(0, counterHook.Count);
         }
 
@@ -65,7 +65,7 @@ namespace InfrastructureTests
             var id2 = Guid.NewGuid();
             var store = new InMemoryEventStore();
             Assert.Equal(0, store.Tags.Count());
-            store.Store(departmentTag, id1, 0, new IEvent[] { new NewDepartmentEvent(id1, "New Department 1"), new NewCommitteeEvent(id1, "Test Committee 1") });
+            store.Store(departmentTag, id1, 0, new IEvent[] { new NewDepartmentEvent(id1, "New Department 1"), new NewCommitteeEvent(id1, "Test Committee 1", "mandate") });
             store.Store(userTag, id2, 0, new IEvent[] { new NewUserEvent(id2, "Test User 1") });
             Assert.Equal(2, store.Tags.Count());
             Assert.Equal(1, store.AggregateList(departmentTag).Count());

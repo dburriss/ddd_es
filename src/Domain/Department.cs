@@ -10,12 +10,19 @@ namespace Domain
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Committee> Committees { get; set; }
+        private ICollection<Committee> committees { get; set; }
+        public IEnumerable<Committee> Committees
+        {
+            get
+            {
+                return committees.Where(x => x.IsActive);
+            }
+        }
         public bool IsActive { get; set; }
 
         public Department()
         {
-            Committees = new List<Committee>();
+            committees = new List<Committee>();
         }
 
         public IEnumerable<IEvent> Handle(NewDepartmentCommand cmd)
@@ -72,10 +79,44 @@ namespace Domain
             if (cmd.CommitteeId == Guid.Empty)
                 throw new ArgumentException(nameof(cmd.CommitteeId));
             if (string.IsNullOrEmpty(nameof(cmd.Name)))
-                throw new ArgumentException(nameof(cmd.AggregateId));
+                throw new ArgumentException(nameof(cmd.Name));
+            if (string.IsNullOrEmpty(nameof(cmd.Mandate)))
+                throw new ArgumentException(nameof(cmd.Mandate));
 
             var events = new List<IEvent>();
-            events.Add(new NewCommitteeEvent(cmd.CommitteeId, cmd.Name));
+            events.Add(new NewCommitteeEvent(cmd.CommitteeId, cmd.Name, cmd.Mandate));
+            return events;
+        }
+
+        public IEnumerable<IEvent> Handle(UpdateCommitteeCommand cmd)
+        {
+            if (cmd == null)
+                throw new ArgumentNullException(nameof(cmd));
+            if (cmd.AggregateId == Guid.Empty)
+                throw new ArgumentException(nameof(cmd.AggregateId));
+            if (cmd.CommitteeId == Guid.Empty)
+                throw new ArgumentException(nameof(cmd.CommitteeId));
+            if (string.IsNullOrEmpty(nameof(cmd.Name)))
+                throw new ArgumentException(nameof(cmd.Name));
+            if (string.IsNullOrEmpty(nameof(cmd.Mandate)))
+                throw new ArgumentException(nameof(cmd.Mandate));
+
+            var events = new List<IEvent>();
+            events.Add(new UpdateCommitteeEvent(cmd.CommitteeId, cmd.AggregateId, cmd.Name, cmd.Mandate));
+            return events;
+        }
+
+        public IEnumerable<IEvent> Handle(DeleteCommitteeCommand cmd)
+        {
+            if (cmd == null)
+                throw new ArgumentNullException(nameof(cmd));
+            if (cmd.AggregateId == Guid.Empty)
+                throw new ArgumentException(nameof(cmd.AggregateId));
+            if (cmd.CommitteeId == Guid.Empty)
+                throw new ArgumentException(nameof(cmd.CommitteeId));
+
+            var events = new List<IEvent>();
+            events.Add(new DeleteCommitteeEvent(cmd.CommitteeId));
             return events;
         }
 
@@ -101,10 +142,31 @@ namespace Domain
             var committee = new Committee()
             {
                 Id = @event.Id,
-                Name = @event.Name
+                Name = @event.Name,
+                Mandate = @event.Mandate,
+                IsActive = true
             };
 
-            Committees.Add(committee);
+            committees.Add(committee);
+        }
+
+        public void Process(UpdateCommitteeEvent @event)
+        {
+            var committee = committees.SingleOrDefault(x => x.Id == @event.CommitteeId);
+            if (committee != null)
+            {
+                committee.Name = @event.Name;
+                committee.Mandate = @event.Mandate;
+            }
+        }
+
+        public void Process(DeleteCommitteeEvent @event)
+        {
+            var committee = committees.SingleOrDefault(x => x.Id == @event.CommitteeId);
+            if (committee != null)
+            {
+                committee.IsActive = false;
+            }
         }
 
         public void Process(IEvent @event)
@@ -114,7 +176,9 @@ namespace Domain
             if (methodInfo != null)
             {
                 methodInfo.Invoke(this, new[] { @event });
+                return;
             }
+            throw new InvalidOperationException("No 'Process' method on aggregate for event: " + eventType.Name);
         }
     }
 }

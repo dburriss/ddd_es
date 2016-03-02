@@ -8,5 +8,7 @@ namespace Domain
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Mandate { get; set; }
+        public bool IsActive { get; set; }
+
     }
 }

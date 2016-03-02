@@ -47,7 +47,7 @@ namespace Domain
             {
                 return methodInfo.Invoke(root, new[] { command }) as IEnumerable<IEvent>;
             }
-            throw new InvalidOperationException("No 'Handle' method on aggregate.");
+            throw new InvalidOperationException("No 'Handle' method on aggregate to handle " + paramType.Name);
         }
 
         //private void Process(IAmAggregate root, IEvent @event)

@@ -1,0 +1,22 @@
+﻿@model CommitteeViewModel
+<div class="col-lg-9">
+    <h3>@Model.Name</h3>
+    <blockquote>@Model.Id</blockquote>
+    <p>@Model.Mandate</p>
+</div>
+<div class="col-lg-3">
+    <div class="panel panel-default">
+        <div class="panel-heading">Department Actions</div>
+        <div class="panel-body">
+            <div>
+                <a asp-action="Update" asp-route-id="@Model.Id" asp-route-departmentId="@Model.DepartmentId" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-pencil"></span> UPDATE
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" asp-route-departmentId="@Model.DepartmentId" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-trash"></span> DELETE
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>

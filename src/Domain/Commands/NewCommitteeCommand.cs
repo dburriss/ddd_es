@@ -2,11 +2,12 @@
 
 namespace Domain.Commands
 {
-    public class NewCommitteeCommand : ICommand
+    public class NewCommitteeCommand : ICommand, ITargetAggregate<Department>
     {
         private Guid _departmentId;
         public Guid CommitteeId { get; private set; }
         public string Name { get; private set; }
+        public string Mandate { get; set; }
 
         public Guid AggregateId
         {
@@ -16,11 +17,12 @@ namespace Domain.Commands
             }
         }
 
-        public NewCommitteeCommand(Guid committee, string name, Guid departmentId)
+        public NewCommitteeCommand(Guid committee, string name, string mandate, Guid departmentId)
         {
             _departmentId = departmentId;
             CommitteeId = committee;
             Name = name;
+            Mandate = mandate;
         }
 
         protected NewCommitteeCommand()

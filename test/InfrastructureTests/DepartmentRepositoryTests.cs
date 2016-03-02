@@ -33,7 +33,7 @@ namespace InfrastructureTests
                 new Tuple<string, Guid, long, IEnumerable<IEvent>>(departmentTag, id, 0, new List<IEvent>
                 {
                     new NewDepartmentEvent(id, "Test Department"),
-                    new NewCommitteeEvent(committeeId, "Test Committee")
+                    new NewCommitteeEvent(committeeId, "Test Committee", "mandate")
                 })
             };
             IDepartmentQueryRepository sut = GetSut(streamData);
@@ -63,12 +63,12 @@ namespace InfrastructureTests
                 new Tuple<string, Guid, long, IEnumerable<IEvent>>(departmentTag, id1, 0, new List<IEvent>
                 {
                     new NewDepartmentEvent(id1, "Test Department 1"),
-                    new NewCommitteeEvent(committeeId1, "Test Committee 1")
+                    new NewCommitteeEvent(committeeId1, "Test Committee 1", "mandate")
                 }),
                 new Tuple<string, Guid, long, IEnumerable<IEvent>>(departmentTag, id2, 0, new List<IEvent>
                 {
                     new NewDepartmentEvent(id2, "Test Department 2"),
-                    new NewCommitteeEvent(committeeId2, "Test Committee 2")
+                    new NewCommitteeEvent(committeeId2, "Test Committee 2", "mandate")
                 })
             };
             IDepartmentQueryRepository sut = GetSut(streamData);
@@ -88,12 +88,12 @@ namespace InfrastructureTests
                 new Tuple<string, Guid, long, IEnumerable<IEvent>>(departmentTag, id1, 0, new List<IEvent>
                 {
                     new NewDepartmentEvent(id1, "Test Department 1"),
-                    new NewCommitteeEvent(committeeId1, "Test Committee 1")
+                    new NewCommitteeEvent(committeeId1, "Test Committee 1", "mandate")
                 }),
                 new Tuple<string, Guid, long, IEnumerable<IEvent>>(departmentTag, id2, 0, new List<IEvent>
                 {
                     new NewDepartmentEvent(id2, "Test Department 2"),
-                    new NewCommitteeEvent(committeeId2, "Test Committee 2")
+                    new NewCommitteeEvent(committeeId2, "Test Committee 2", "mandate")
                 })
             };
             IDepartmentQueryRepository sut = GetSut(streamData);

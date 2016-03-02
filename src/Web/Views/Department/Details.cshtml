@@ -17,9 +17,9 @@
                 <tr>
                     <td>@c.Name</td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-sm"><span class="glyphicon glyphicon-eye-open"></span></a>
-                        <a asp-action="Update" asp-route-id="@c.Id" class="btn btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
-                        <a asp-action="Delete" asp-route-id="@c.Id" class="btn btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
+                        <a asp-action="Details" asp-controller="Committee" asp-route-id="@c.Id" asp-route-departmentId="@Model.Id" class="btn btn-sm"><span class="glyphicon glyphicon-eye-open"></span></a>
+                        <a asp-action="Update" asp-controller="Committee" asp-route-id="@c.Id" asp-route-departmentId="@Model.Id" class="btn btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a asp-action="Delete" asp-controller="Committee" asp-route-id="@c.Id" asp-route-departmentId="@Model.Id" class="btn btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
                     </td>
                 </tr>
             }
@@ -38,7 +38,7 @@
                 <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
                     <span class="glyphicon glyphicon-trash"></span> DELETE
                 </a>
-                <a asp-action="Create" asp-controller="Committee" class="btn btn-primary">
+                <a asp-action="Create" asp-controller="Committee" asp-route-departmentId="@Model.Id" class="btn btn-primary">
                     <span class="glyphicon glyphicon-plus-sign"></span> NEW COMMITTEE
                 </a>
             </div>

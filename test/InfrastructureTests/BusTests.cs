@@ -13,7 +13,7 @@ namespace InfrastructureTests
         [Fact]
         public async Task Publish_ToUnsubscribedEvent_NothingHappens()
         {
-            var ev = new NewCommitteeEvent(Guid.NewGuid(), "Test Committee");
+            var ev = new NewCommitteeEvent(Guid.NewGuid(), "Test Committee", "mandate");
             bool hasRun = false;
             Action<object, IDictionary<string, string>> action = (o, h) => hasRun = true;
 
@@ -31,7 +31,7 @@ namespace InfrastructureTests
         [Fact]
         public async Task Publish_ToSubscribedEvent_RunsTask()
         {
-            var ev = new NewCommitteeEvent(Guid.NewGuid(), "Test Committee");
+            var ev = new NewCommitteeEvent(Guid.NewGuid(), "Test Committee", "mandate");
             bool hasRun = false;
             Action<object, IDictionary<string, string>> action = (o, h) => hasRun = true;
 

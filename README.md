@@ -14,3 +14,5 @@ Source was used as a demo for a talk: https://sway.com/QjcOHMKGvTUQ2qNT
 - `Handle` method on domain objects process commands. This is where validation is done. The `Handle` method returns a list of events that the domain raises due to that command. 
 When events are processed by the `Process` method, there is no validation since these events have already happened and so must be processed.
 
+## Running the example
+Currently it is just an in-memory store. The web project uses ASP.NET Core RC1 so as long as you have that setup you should be good to go.

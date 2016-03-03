@@ -1,0 +1,11 @@
+﻿@model Domain.Events.IEventStream
+
+<h3>@ViewBag.Title</h3>
+<blockquote>Version: @Model.Version</blockquote>
+<ol class="list-group">
+    @foreach (var ev in Model)
+    {
+        var t = ev.GetType();
+        <li class="list-group-item">@t.Name</li>
+    }
+</ol>

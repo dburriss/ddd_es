@@ -1,0 +1,10 @@
+﻿@model IEnumerable<Guid>
+
+<h3>@ViewBag.Title</h3>
+
+<div class="list-group">
+    @foreach (var id in Model)
+    {
+        <a class="list-group-item" asp-action="Stream" asp-route-id="@id" asp-route-tag="@ViewBag.Title">@id</a>
+    }
+</div>

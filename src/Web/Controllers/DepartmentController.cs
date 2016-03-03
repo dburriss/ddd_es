@@ -21,7 +21,9 @@ namespace Web.Controllers
 
         public IActionResult Index()
         {
-            var departments = _departmentQueryRepository.Query().Select(Mapper.Map<DepartmentViewModel>);            
+            var departments = _departmentQueryRepository
+                .Query()
+                .Select(Mapper.Map<DepartmentViewModel>);            
             return View(departments);
         }
 

@@ -1,0 +1,8 @@
+﻿@model IEnumerable<string>
+
+<div class="list-group">
+    @foreach (var tag in Model)
+    {
+        <a class="list-group-item" asp-action="TagIds" asp-route-tag="@tag">@tag</a>
+    }
+</div>
